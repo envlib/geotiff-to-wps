@@ -1,0 +1,138 @@
+[project]
+name = "geotiff-to-wps"
+authors = [
+  { name = "mullenkamp", email = "mullenkamp1@gmail.com" }
+]
+description = "Convert GeoTIFF DEMs to WPS geogrid binary format for WRF"
+readme = "README.md"
+dynamic = ["version"]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+]
+requires-python = ">=3.11"
+dependencies = [
+  "numpy",
+  "rasterio",
+]
+
+[project.scripts]
+geotiff-to-wps = "geotiff_to_wps.cli:main"
+
+[dependency-groups]
+dev = [
+  "spyder-kernels==2.5.2",
+  "black",
+  "mypy",
+  "ruff",
+  "pytest",
+  "pytest-cov",
+  "mkdocs-material",
+  "mkdocstrings[python]",
+  
+]
+
+[tool.pytest.ini_options]
+testpaths = ["geotiff_to_wps/tests"]
+
+
+[tool.hatch]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.black]
+target-version = ["py311"]
+line-length = 120
+skip-string-normalization = true
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+  "A",
+  "ARG",
+  "B",
+  "C",
+  "DTZ",
+  "E",
+  "EM",
+  "F",
+  "FBT",
+  "I",
+  "ICN",
+  "ISC",
+  "N",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "Q",
+  "RUF",
+  "S",
+  "T",
+  "TID",
+  "UP",
+  "W",
+  "YTT",
+]
+ignore = [
+  # Allow non-abstract empty methods in abstract base classes
+  "B027",
+  # Allow boolean positional values in function calls, like `dict.get(... True)`
+  "FBT003",
+  # Ignore checks for possible passwords
+  "S105", "S106", "S107",
+  # Ignore complexity
+  "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915",
+]
+unfixable = [
+  # Don't touch unused imports
+  "F401",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["geotiff_to_wps"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.per-file-ignores]
+# Tests can use magic values, assertions, and relative imports
+"tests/**/*" = ["PLR2004", "S101", "TID252"]
+
+[tool.coverage.run]
+source_pkgs = ["geotiff_to_wps", "tests"]
+branch = true
+parallel = true
+
+[tool.coverage.paths]
+geotiff_to_wps = ["geotiff_to_wps"]
+tests = ["geotiff_to_wps/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[build-system]
+requires = ["hatchling>=1.26.1"]
+build-backend = "hatchling.build"
+
+[project.urls]
+Documentation = "https://mullenkamp.github.io/geotiff-to-wps/"
+Source = "https://github.com/geotiff-to-wps"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/geotiff_to_wps",
+]
+exclude = [
+    "/geotiff_to_wps/tests/*",
+]
+
+[tool.hatch.version]
+path = "geotiff_to_wps/__init__.py"
